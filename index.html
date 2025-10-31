@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poem Archive & Radio Player</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .header {
+            background-color: #5d5c61;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .radio-player {
+            display: flex;
+            align-items: center;
+            background-color: #737373;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .radio-player button {
+            background-color: #c9c9c9;
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .radio-player button:hover {
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .poem-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .poem-item {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .poem-title {
+            padding: 15px;
+            background-color: #e0e0e0;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .poem-title:hover {
+            background-color: #d1d1d1;
+        }
+
+        .new-tag {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .poem-content-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out;
+        }
+
+        .poem-content {
+            display: flex;
+            padding: 20px;
+        }
+        
+        .poem-text {
+            flex: 1;
+            padding-right: 20px;
+            padding-left: 20px; /* Added left padding here */
+            white-space: pre-wrap; /* Preserves formatting of the poem text */
+        }
+
+        .poem-image {
+            flex-shrink: 0;
+            width: 40%;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;   /* Center vertically */
+            padding-right: 20px; /* Added right padding for consistency */
+        }
+
+        .poem-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-height: 250px; /* Constrain image height */
+            object-fit: contain; /* Ensure image fits within bounds */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📜 Songs for Shamayel</h1>
+        <div class="radio-player">
+            <span>🎶 Bbtoe Radio</span>
+            <button id="playPauseButton">Play</button>
+            <audio id="radioStream" src="" loop></audio>
+        </div>
+    </div>
+
+    <div class="container">
+        <ul class="poem-list" id="poemList">
+            </ul>
+    </div>
+
+    <script>
+        // --- Poem Data ---
+        const poems = [
+            {
+                name: "Ocean",
+                isNew: true,
+                poem: `~ By Sartaj Jamal Chowdhury
+
+The moon - a mirror to your smile;
+No rigger enchanting enough to paint.
+I held your soft hands for a while,
+Your  eyes as pure as a fictional saint,
+Got me swayed off of the ground, closer to a sky.
+                
+A sky not from the world I know.
+With you in this world, a few realms more,
+I wish to stare at you and remain lost
+I want the time to stop, but the Sun melts fast every frost.
+                
+When I forget what life is worth,
+I listen to you softly breathe.
+Wish we shared our hearts some more;
+Before the world put us miles apart, not feet.
+                
+I walk around a sleeping town,
+Moping to not have you by my side.
+Hopes to be yours forever and more,
+Is the strength that keeps me alive.`,
+                image: "https://t4.ftcdn.net/jpg/00/80/60/91/360_F_80609112_wzMi8JnoOz84017J1k7Htfx18DImD4k0.jpg"
+            },
+            {
+                name: "Interspace",
+                isNew: false,
+                poem: `~ By Sartaj Jamal Chowdhury
+                
+She arrived dust and mud
+Innocuous, yet enchanting
+Her boat shall leave 
+And so will my heart
+
+Yet I tread near almost crawling
+Minutes to days to weeks
+Faster than a Jackal, the time leaps
+All my soul keeps unfurling
+
+I couldn't wait but stood still to stare
+Ocean waves that break but silence
+The silence is louder, yet unheard
+wish i did not hearken
+
+Wish I did not pay attention
+To the darkness that rose above
+tearing us apart
+every drop of agony
+
+Agony as loud as a storm
+Yet unheard 
+unheard by the fear etched hearts
+stream shall not stop to ebb
+
+her smile embarked the bay
+the bay of a box named soul
+it will forever stay
+to be human is to slowly mould
+
+her warmth a summer breeze
+a hearth in a winter freeze
+a golden hue in a dreamy fall
+the spring garden of flowers that waltz
+
+we crossed paths for a certain span
+a glimpse of life in a no man's land
+short lived we were lines of fallen paths
+the patterns of love, maybe merely a glass of sand`,
+                image: "https://images.ft.com/v3/image/raw/ftcms%3A37c41f1f-307d-4ca1-9c2c-b2cf5afd70cb?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1"
+            },
+            {
+                name: "Coming Soon",
+                isNew: false,
+                poem: `Work in prog`,
+                image: "https://t4.ftcdn.net/jpg/09/99/09/89/360_F_999098968_sVwBgteezt2zfvoleGetnuzj04BSTVE1.jpg"
+            }
+        ];
+
+        // --- Poem Archive Logic ---
+        const poemListElement = document.getElementById('poemList');
+
+        function renderPoems() {
+            poems.forEach((poem, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'poem-item';
+
+                // Poem Title (Clickable)
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'poem-title';
+                titleDiv.setAttribute('data-index', index);
+                titleDiv.innerHTML = `${poem.name} ${poem.isNew ? '<span class="new-tag">[New]</span>' : ''}`;
+                
+                // Poem Content (Dropdown)
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'poem-content-wrapper';
+                contentWrapper.id = `content-${index}`;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'poem-content';
+                
+                const poemText = document.createElement('pre');
+                poemText.className = 'poem-text';
+                poemText.textContent = poem.poem;
+                
+                const poemImage = document.createElement('div');
+                poemImage.className = 'poem-image';
+                poemImage.innerHTML = `<img src="${poem.image}" alt="${poem.name}">`;
+
+                contentDiv.appendChild(poemText);
+                contentDiv.appendChild(poemImage);
+                contentWrapper.appendChild(contentDiv);
+
+                listItem.appendChild(titleDiv);
+                listItem.appendChild(contentWrapper);
+                poemListElement.appendChild(listItem);
+            });
+        }
+
+        function togglePoem(event) {
+            const titleElement = event.currentTarget;
+            const index = titleElement.getAttribute('data-index');
+            const contentWrapper = document.getElementById(`content-${index}`);
+
+            if (contentWrapper.style.maxHeight === '0px' || contentWrapper.style.maxHeight === '') {
+                // Open the dropdown
+                contentWrapper.style.maxHeight = contentWrapper.scrollHeight + "px";
+            } else {
+                // Close the dropdown
+                contentWrapper.style.maxHeight = '0px';
+            }
+        }
+
+        // Attach event listeners after rendering
+        window.onload = () => {
+            renderPoems();
+            document.querySelectorAll('.poem-title').forEach(title => {
+                title.addEventListener('click', togglePoem);
+            });
+            initializeRadioPlayer();
+        };
+
+        // --- Radio Player Logic (Using Radio Browser API) ---
+        const radioStream = document.getElementById('radioStream');
+        const playPauseButton = document.getElementById('playPauseButton');
+        let currentStreamUrl = '';
+
+        async function getRadioStation() {
+            // Find a random server for the API
+            const serverResponse = await fetch('http://all.api.radio-browser.info/json/servers');
+            const servers = await serverResponse.json();
+            const server = servers[Math.floor(Math.random() * servers.length)];
+            // const apiUrl = `https://${server.name}/json/stations/bytag/pop`; // Search by 'pop' tag
+            // Change this line in your JavaScript
+            const apiUrl = `https://${server.name}/json/stations/bytag/soft%20rock`; // Searches for 'soft rock'
+
+            // Fetch a list of stations
+            const stationsResponse = await fetch(apiUrl);
+            const stations = await stationsResponse.json();
+
+            if (stations && stations.length > 0) {
+                // Select a random station
+                const randomStation = stations[Math.floor(Math.random() * stations.length)];
+                currentStreamUrl = randomStation.url_resolved || randomStation.url;
+                radioStream.src = currentStreamUrl;
+                console.log("Found Radio Station:", randomStation.name, "Stream URL:", currentStreamUrl);
+            } else {
+                console.error("No radio stations found for the tag 'pop'.");
+            }
+        }
+
+        function initializeRadioPlayer() {
+            getRadioStation(); // Get the station and set the source
+
+            playPauseButton.addEventListener('click', () => {
+                if (radioStream.paused) {
+                    // Start playback
+                    if (!radioStream.src || radioStream.src === window.location.href) {
+                        // Re-fetch if the source is not set or invalid
+                        getRadioStation().then(() => {
+                            radioStream.play().then(() => {
+                                playPauseButton.textContent = 'Pause';
+                            }).catch(e => {
+                                console.error("Error playing radio stream:", e);
+                                playPauseButton.textContent = 'Play (Error)';
+                            });
+                        });
+                    } else {
+                        // Play the existing stream
+                        radioStream.play().then(() => {
+                            playPauseButton.textContent = 'Pause';
+                        }).catch(e => {
+                            console.error("Error playing radio stream:", e);
+                            playPauseButton.textContent = 'Play (Error)';
+                        });
+                    }
+                } else {
+                    // Pause playback
+                    radioStream.pause();
+                    playPauseButton.textContent = 'Play';
+                }
+            });
+
+            // Handle errors
+            radioStream.addEventListener('error', () => {
+                console.error("Audio playback error. Trying to find a new station...");
+                playPauseButton.textContent = 'Play (Failed)';
+                // Optional: Attempt to find a new station on error
+                // getRadioStation(); 
+            });
+        }
+    </script>
+
+</body>
+</html>
