@@ -335,11 +335,19 @@ The patterns of love, maybe merely a glass of sand.`,
             const titleElement = event.currentTarget;
             const index = titleElement.getAttribute('data-index');
             const contentWrapper = document.getElementById(`content-${index}`);
+            
+            // 1. Store the intended state (will be 'open' if it's currently closed)
+            const isCurrentlyClosed = contentWrapper.style.maxHeight === '0px' || contentWrapper.style.maxHeight === '';
 
-            if (contentWrapper.style.maxHeight === '0px' || contentWrapper.style.maxHeight === '') {
+            // 2. CLOSE ALL: Loop through all content wrappers and close them
+            document.querySelectorAll('.poem-content-wrapper').forEach(wrapper => {
+                wrapper.style.maxHeight = '0px';
+            });
+
+            // 3. OPEN TARGET: Only open the clicked one if it was previously closed
+            if (isCurrentlyClosed) {
+                // Open the dropdown by setting max-height to the scrollHeight
                 contentWrapper.style.maxHeight = contentWrapper.scrollHeight + "px";
-            } else {
-                contentWrapper.style.maxHeight = '0px';
             }
         }
 
