@@ -360,7 +360,7 @@ The patterns of love, maybe merely a glass of sand.`,
         async function getRadioStation() {
             try {
                 // Find a random server for the API
-                const serverResponse = await fetch('http://all.api.radio-browser.info/json/servers');
+                const serverResponse = await fetch('https://all.api.radio-browser.info/json/servers');
                 const servers = await serverResponse.json();
                 const server = servers[Math.floor(Math.random() * servers.length)];
                 
