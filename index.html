@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poem Archive & Radio Player</title>
+    <title>A Poem Archive & Radio Player for Shamayel</title>
     <style>
+        /* --- General Styles --- */
         body {
             font-family: 'Georgia', serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #d0a58f;
             color: #333;
         }
 
@@ -29,6 +30,7 @@
             font-family: 'Playfair Display', serif;
         }
 
+        /* --- Radio Player Styles --- */
         .radio-player {
             display: flex;
             align-items: center;
@@ -59,6 +61,7 @@
             padding: 0 20px;
         }
 
+        /* --- Poem List Styles --- */
         .poem-list {
             list-style: none;
             padding: 0;
@@ -102,6 +105,7 @@
             transition: max-height 0.7s ease-in-out;
         }
 
+        /* --- Poem Content (Desktop View: Side-by-Side) --- */
         .poem-content {
             display: flex;
             padding: 20px;
@@ -110,17 +114,24 @@
         .poem-text {
             flex: 1;
             padding-right: 20px;
-            padding-left: 20px; /* Added left padding here */
-            white-space: pre-wrap; /* Preserves formatting of the poem text */
+            padding-left: 20px;
+            white-space: pre-wrap; 
+        }
+
+        .poem-text pre {
+            /* Ensures pre formatting is applied inside the poem-text container */
+            white-space: pre-wrap; 
+            word-wrap: break-word;
         }
 
         .poem-image {
             flex-shrink: 0;
             width: 40%;
             display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center;   /* Center vertically */
-            padding-right: 20px; /* Added right padding for consistency */
+            justify-content: center;
+            align-items: center;
+            /* padding-right: 20px;
+            padding-left: 20px; */
         }
 
         .poem-image img {
@@ -128,8 +139,54 @@
             height: auto;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-height: 250px; /* Constrain image height */
-            object-fit: contain; /* Ensure image fits within bounds */
+            max-height: 250px; 
+            object-fit: contain;
+        }
+        
+        /* --- Mobile View Enhancement (max-width: 768px) --- */
+        @media (max-width: 768px) {
+            /* Header adjustments for mobile */
+            .header {
+                flex-direction: column; /* Stack title and radio vertically */
+                padding: 15px 10px;
+            }
+
+            .header h1 {
+                text-align: center;
+            }
+            
+            .radio-player {
+                /* Center the player horizontally and give it some space */
+                margin: 10px auto; 
+                padding: 6px 12px;
+            }
+
+            /* Poem content adjustments for mobile */
+            .poem-content {
+                flex-direction: column; /* Stacks items vertically */
+            }
+
+            .poem-text {
+                width: auto;
+                padding: 10px 20px 20px 20px;
+            }
+            
+            .poem-text pre {
+                 /* Ensure content wraps freely on small screens */
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+
+            .poem-image {
+                /* Full width and moved to the bottom */
+                width: 60%; 
+                order: 2; 
+                padding: 10px 20px 20px 20px;
+            }
+
+            .poem-image img {
+                max-height: 300px; 
+            }
         }
     </style>
 </head>
@@ -153,7 +210,7 @@
         // --- Poem Data ---
         const poems = [
             {
-                name: "Ocean",
+                name: "Oceans",
                 isNew: true,
                 poem: `~ By Sartaj Jamal Chowdhury
 
@@ -180,53 +237,53 @@ Is the strength that keeps me alive.`,
                 image: "https://t4.ftcdn.net/jpg/00/80/60/91/360_F_80609112_wzMi8JnoOz84017J1k7Htfx18DImD4k0.jpg"
             },
             {
-                name: "Interspace",
-                isNew: false,
+                name: "Waves",
+                isNew: true,
                 poem: `~ By Sartaj Jamal Chowdhury
                 
-She arrived dust and mud
-Innocuous, yet enchanting
-Her boat shall leave 
-And so will my heart
+She arrived dust and mud.
+Innocuous, yet enchanting.
+Her boat shall leave,
+And so will my heart.
 
-Yet I tread near almost crawling
-Minutes to days to weeks
-Faster than a Jackal, the time leaps
-All my soul keeps unfurling
+Yet I tread near almost crawling,
+Minutes to days to weeks.
+Faster than a Jackal, the time leaps.
+All my soul keeps unfurling..
 
-I couldn't wait but stood still to stare
-Ocean waves that break but silence
-The silence is louder, yet unheard
-wish i did not hearken
+I couldn't wait but stood still to stare-
+Ocean waves that break but silence;
+The silence is louder, yet unheard.
+Wish i did not hearken.
 
-Wish I did not pay attention
-To the darkness that rose above
-tearing us apart
-every drop of agony
+Wish I did not pay attention.
+To the darkness that rose above;
+Tearing us apart.
+Every drop of agony..
 
-Agony as loud as a storm
-Yet unheard 
-unheard by the fear etched hearts
-stream shall not stop to ebb
+Agony as loud as a storm;
+Yet unheard.. 
+Unheard by the fear etched hearts.
+No streams shall ever stop to ebb..
 
-her smile embarked the bay
-the bay of a box named soul
-it will forever stay
-to be human is to slowly mould
+Her smile embarked the bay,
+The bay of a box named soul..
+It will forever stay,
+To be human is to slowly mould.
 
-her warmth a summer breeze
-a hearth in a winter freeze
-a golden hue in a dreamy fall
-the spring garden of flowers that waltz
+Her warmth a summer breeze.
+The hearth in a winter freeze.
+A golden hue in a dreamy fall.
+The spring garden of flowers that waltz.
 
-we crossed paths for a certain span
-a glimpse of life in a no man's land
-short lived we were lines of fallen paths
-the patterns of love, maybe merely a glass of sand`,
+We crossed paths for a minute span,
+A glimpse of life in a no man's land.
+Short lived we were lines of fallen paths..
+The patterns of love, maybe merely a glass of sand.`,
                 image: "https://images.ft.com/v3/image/raw/ftcms%3A37c41f1f-307d-4ca1-9c2c-b2cf5afd70cb?source=next-article&fit=scale-down&quality=highest&width=1440&dpr=1"
-            },
-            {
-                name: "Coming Soon",
+           },
+           {
+                name: "Under Construction",
                 isNew: false,
                 poem: `Work in prog`,
                 image: "https://t4.ftcdn.net/jpg/09/99/09/89/360_F_999098968_sVwBgteezt2zfvoleGetnuzj04BSTVE1.jpg"
@@ -255,7 +312,8 @@ the patterns of love, maybe merely a glass of sand`,
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'poem-content';
                 
-                const poemText = document.createElement('pre');
+                // Use <pre> tag to preserve original line breaks and spaces
+                const poemText = document.createElement('pre'); 
                 poemText.className = 'poem-text';
                 poemText.textContent = poem.poem;
                 
@@ -279,10 +337,8 @@ the patterns of love, maybe merely a glass of sand`,
             const contentWrapper = document.getElementById(`content-${index}`);
 
             if (contentWrapper.style.maxHeight === '0px' || contentWrapper.style.maxHeight === '') {
-                // Open the dropdown
                 contentWrapper.style.maxHeight = contentWrapper.scrollHeight + "px";
             } else {
-                // Close the dropdown
                 contentWrapper.style.maxHeight = '0px';
             }
         }
@@ -296,73 +352,66 @@ the patterns of love, maybe merely a glass of sand`,
             initializeRadioPlayer();
         };
 
-        // --- Radio Player Logic (Using Radio Browser API) ---
+        // --- Radio Player Logic (Radio Browser API) ---
         const radioStream = document.getElementById('radioStream');
         const playPauseButton = document.getElementById('playPauseButton');
         let currentStreamUrl = '';
 
         async function getRadioStation() {
-            // Find a random server for the API
-            const serverResponse = await fetch('http://all.api.radio-browser.info/json/servers');
-            const servers = await serverResponse.json();
-            const server = servers[Math.floor(Math.random() * servers.length)];
-            // const apiUrl = `https://${server.name}/json/stations/bytag/pop`; // Search by 'pop' tag
-            // Change this line in your JavaScript
-            const apiUrl = `https://${server.name}/json/stations/bytag/soft%20rock`; // Searches for 'soft rock'
+            try {
+                // Find a random server for the API
+                const serverResponse = await fetch('http://all.api.radio-browser.info/json/servers');
+                const servers = await serverResponse.json();
+                const server = servers[Math.floor(Math.random() * servers.length)];
+                
+                // Search by 'soft rock' tag
+                const apiUrl = `https://${server.name}/json/stations/bytag/soft%20rock`;
 
-            // Fetch a list of stations
-            const stationsResponse = await fetch(apiUrl);
-            const stations = await stationsResponse.json();
+                // Fetch a list of stations
+                const stationsResponse = await fetch(apiUrl);
+                const stations = await stationsResponse.json();
 
-            if (stations && stations.length > 0) {
-                // Select a random station
-                const randomStation = stations[Math.floor(Math.random() * stations.length)];
-                currentStreamUrl = randomStation.url_resolved || randomStation.url;
-                radioStream.src = currentStreamUrl;
-                console.log("Found Radio Station:", randomStation.name, "Stream URL:", currentStreamUrl);
-            } else {
-                console.error("No radio stations found for the tag 'pop'.");
+                if (stations && stations.length > 0) {
+                    // Select a random station
+                    const randomStation = stations[Math.floor(Math.random() * stations.length)];
+                    let resolvedUrl = randomStation.url_resolved || randomStation.url;
+                    
+                    // CRITICAL FIX: Force stream URL to use HTTPS to avoid Mixed Content Error on GitHub Pages
+                    currentStreamUrl = resolvedUrl.replace("http://", "https://");
+                    
+                    radioStream.src = currentStreamUrl;
+                    console.log("Found Radio Station:", randomStation.name, "Stream URL:", currentStreamUrl);
+                } else {
+                    console.error("No radio stations found for the tag 'soft rock'.");
+                }
+            } catch (error) {
+                console.error("Error fetching radio stations:", error);
             }
         }
 
         function initializeRadioPlayer() {
-            getRadioStation(); // Get the station and set the source
+            getRadioStation(); 
 
             playPauseButton.addEventListener('click', () => {
                 if (radioStream.paused) {
-                    // Start playback
                     if (!radioStream.src || radioStream.src === window.location.href) {
-                        // Re-fetch if the source is not set or invalid
-                        getRadioStation().then(() => {
-                            radioStream.play().then(() => {
-                                playPauseButton.textContent = 'Pause';
-                            }).catch(e => {
-                                console.error("Error playing radio stream:", e);
-                                playPauseButton.textContent = 'Play (Error)';
-                            });
-                        });
-                    } else {
-                        // Play the existing stream
-                        radioStream.play().then(() => {
-                            playPauseButton.textContent = 'Pause';
-                        }).catch(e => {
-                            console.error("Error playing radio stream:", e);
-                            playPauseButton.textContent = 'Play (Error)';
-                        });
+                        getRadioStation();
                     }
+                    radioStream.play().then(() => {
+                        playPauseButton.textContent = 'Pause';
+                    }).catch(e => {
+                        console.error("Error playing radio stream. Ensure the stream is accessible over HTTPS.", e);
+                        playPauseButton.textContent = 'Play (Error)';
+                    });
                 } else {
-                    // Pause playback
                     radioStream.pause();
                     playPauseButton.textContent = 'Play';
                 }
             });
 
-            // Handle errors
             radioStream.addEventListener('error', () => {
-                console.error("Audio playback error. Trying to find a new station...");
+                console.error("Audio playback error. The stream may be broken or inaccessible via HTTPS.");
                 playPauseButton.textContent = 'Play (Failed)';
-                // Optional: Attempt to find a new station on error
-                // getRadioStation(); 
             });
         }
     </script>
